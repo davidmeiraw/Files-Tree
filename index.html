@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>File System Map</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <div id="loginModal" class="login-modal" aria-hidden="true">
+    <div class="login-card">
+      <p class="eyebrow">Secure access</p>
+      <h2>Bienvenido</h2>
+      <p class="muted">Ingresa tus credenciales guardadas en el servidor.</p>
+      <div class="form-row">
+        <label for="loginUser">Usuario</label>
+        <input id="loginUser" type="text" autocomplete="username" />
+      </div>
+      <div class="form-row">
+        <label for="loginPass">Contraseña</label>
+        <input id="loginPass" type="password" autocomplete="current-password" />
+      </div>
+      <div class="form-row actions">
+        <button id="loginBtn" type="button" class="btn primary block">Ingresar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <p class="eyebrow">Workspace</p>
+        <h1>File System Map</h1>
+        <p class="muted">Organiza tus carpetas, asigna etiquetas y sincroniza el árbol de forma segura.</p>
+      </div>
+      <div class="status-block">
+        <div class="pill live">Live</div>
+        <div class="status-text" id="statusHint">Arrastra para reorganizar · Auto-guardado activo</div>
+      </div>
+    </header>
+
+    <section class="toolbar">
+      <div class="controls">
+        <select id="tagFilter" class="pill-input">
+          <option value="">— Filtrar por etiqueta —</option>
+        </select>
+        <button id="addRootBtn" class="btn primary">+ Nueva raíz</button>
+        <button id="addChildBtn" class="btn ghost">+ Agregar hijo</button>
+        <button id="deleteBtn" class="btn danger ghost">Eliminar raíz</button>
+      </div>
+      <div class="controls">
+        <button id="exportPdfBtn" class="btn">Exportar PDF</button>
+        <button id="exportJsonBtn" class="btn">Exportar JSON</button>
+        <input id="importJsonInput" type="file" accept="application/json" style="display:none" />
+        <button id="importJsonBtn" class="btn">Importar JSON</button>
+        <button id="syncGithubBtn" class="btn accent">Sincronizar GitHub</button>
+      </div>
+    </section>
+
+    <main class="main">
+      <section class="tree-panel card light">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Estructura</p>
+            <h3>Vista de carpetas</h3>
+          </div>
+        </div>
+        <div id="treeContainer" class="tree-container" aria-label="Árbol de carpetas"></div>
+        <div class="tree-hint">Arrastra carpetas sobre otra para moverlas.</div>
+      </section>
+
+      <aside class="editor-panel">
+        <form id="folderForm" class="card">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Detalle</p>
+              <h3>Carpeta seleccionada</h3>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Nombre</label>
+            <input id="nameInput" type="text" placeholder="Nombre de la carpeta" required />
+          </div>
+          <div class="form-row">
+            <label>Descripción</label>
+            <textarea id="descInput" rows="6" placeholder="Descripción"></textarea>
+          </div>
+          <div class="form-row">
+            <label>Etiquetas (separadas por comas)</label>
+            <input id="tagsInput" type="text" placeholder="ej: proyecto, urgente" />
+          </div>
+          <div class="form-row actions space-between">
+            <div class="muted auto-note">Auto-guardado activado al editar.</div>
+          </div>
+        </form>
+
+        <section class="sync-panel card">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Sincronización</p>
+              <h3>GitHub opcional</h3>
+            </div>
+            <div id="syncStatus" class="pill subtle"></div>
+          </div>
+          <p class="small">Guarda el JSON del árbol en un repo de GitHub. Proporciona token y ruta. <strong>No compartas tu token públicamente.</strong></p>
+          <div class="form-row">
+            <label>Token (PAT)</label>
+            <input id="ghToken" type="password" placeholder="ghp_..." />
+          </div>
+          <div class="form-row">
+            <label>Owner</label>
+            <input id="ghOwner" type="text" placeholder="tu-usuario" />
+          </div>
+          <div class="form-row">
+            <label>Repo</label>
+            <input id="ghRepo" type="text" placeholder="mi-repo" />
+          </div>
+          <div class="form-row">
+            <label>Ruta del archivo</label>
+            <input id="ghPath" type="text" placeholder="data/tree.json" />
+          </div>
+          <div class="form-row actions">
+            <button id="pushBtn" type="button" class="btn accent">Push a GitHub</button>
+            <button id="pullBtn" type="button" class="btn ghost">Pull desde GitHub</button>
+          </div>
+          <div class="form-row">
+            <label class="checkbox"><input id="autoSync" type="checkbox" /> Auto-sync (push automático al guardar)</label>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <div>Hecho para GitHub Pages · Guardado local automático</div>
+    </footer>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

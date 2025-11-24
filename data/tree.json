@@ -1,0 +1,26 @@
+[
+  {
+    "id": "n_init_1",
+    "parentId": null,
+    "name": "Proyectos",
+    "description": "Carpeta principal",
+    "tags": ["inicio"],
+    "collapsed": false
+  },
+  {
+    "id": "n_init_2",
+    "parentId": null,
+    "name": "Documentos",
+    "description": "Mis documentos",
+    "tags": ["docs"],
+    "collapsed": false
+  },
+  {
+    "id": "n_init_3",
+    "parentId": "n_init_1",
+    "name": "Proyecto A",
+    "description": "Descripción A",
+    "tags": ["proyecto","urgent"],
+    "collapsed": false
+  }
+]
